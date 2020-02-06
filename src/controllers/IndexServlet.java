@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,26 +33,17 @@ public class IndexServlet extends HttpServlet {
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        EntityManager em = DBUtil.createEntityManager();
-//
-//        System.out.println("servletpath : " + request.getServletPath());//アノテーション
-//
-//        List<Task> task = em.createNamedQuery("getAlltasks",Task.class).getResultList();
-//
-//        response.getWriter().append(Integer.valueOf(task.size()).toString());
-//
-//        em.close();
-//
-//        request.setAttribute("task",task);
-//        RequestDispatcher rd = request.getRequestDispatcher("jsp/index.jsp");
-//        rd.forward(request, response);
-    	EntityManager em = DBUtil.createEntityManager();
+        EntityManager em = DBUtil.createEntityManager();
 
-        List<Task> task = em.createNamedQuery("getAlltasks", Task.class)
-                                   .getResultList();
+        List<Task> task = em.createNamedQuery("getAlltasks",Task.class).getResultList();
+
         response.getWriter().append(Integer.valueOf(task.size()).toString());
 
         em.close();
+
+        request.setAttribute("task",task);
+        RequestDispatcher rd = request.getRequestDispatcher("jsp/index.jsp");
+        rd.forward(request, response);
     }
 
 }
